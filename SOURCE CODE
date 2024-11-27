@@ -1,0 +1,36 @@
+RUN IN VISUAL STUDIO-
+# Imports
+import re
+import random
+# List of pre-defined responses using dictonary (key-value pairs)
+response = {
+    "hello" : ["Hello, how can I help you?"],
+    "i feel (.*)" : ["Why do you feel {}?", "How long have you been feeling {}?"],
+    "i am (.*)" : ["Why do you say that you are {}?", "How long have you been {}?"],
+    "i'm (.*)" : ["Why are you {}?", "How long have you been {}?"],
+    "i (.*) you" : ["Why do you {} me?", "What makes you {} me?"],
+    "i (.*) myself" : ["Why do you {} yourself?", "What makes you {} yourself?"],
+    "(.) sorry (.)" : ["There's no need to apologize."," What are you apologizing for?"],
+    "(.) friend (.)" : ["Tell me more about your friend."],
+    "yes" : ["You seem quite sure.", "Ok, but can you elaborate a little bit?"],
+    "no" : ["Why not?", "Ok, but can you elaborate a little bit?"],
+    "(.*)" : ["Please tell me more about yourself.", "Let's change focus for a bit... Tell me more about your family"],
+    "": ["Why do you think that?", "Please tell me more", "Let's change focus for a bit.. Tell me more about yourself"],
+}
+# Function to match user input
+def match_response(input_text):
+  for pattern, response_list in response.items():
+    matches = re.match(pattern, input_text.lower())
+    if matches:
+      chosen_response = random.choice(response_list)
+      return chosen_response.format(*matches.groups())
+  return "I'm sorry, I do not understand."
+# Main Loop
+print("Welcome to the chatbot")
+while True:
+  user_input = input("You: ")
+  if user_input.lower() == "bye":
+    print("Therapist: Goodbye.")
+    break
+  else:
+    print("Therapist: "+match_response(user_input))
